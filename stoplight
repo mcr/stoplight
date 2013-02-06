@@ -1,0 +1,52 @@
+#/usr/bin/python
+
+#
+# Written for PyUSB 1.0 (w/libusb 1.0.3)
+#
+# Includes functionality to retrieve string descriptors
+#
+# Origin: follower@rancidbacon.com
+# Author: mcr@sandelman.ca
+#
+# Version: 20130205
+#
+
+#
+# Assumes 'UsbStreamDemo1.pde' is loaded on Arduino and 
+# LEDs are present on pins 11, 12 and 13.
+#
+
+import usb # 1.0 not 0.4
+
+
+import sys
+sys.path.append("..")
+
+from arduino.usbdevice import ArduinoUsbDevice
+
+
+if __name__ == "__main__":
+
+    theDevice = ArduinoUsbDevice(idVendor=0x16c0, idProduct=0x05df)
+
+    print "Found: 0x%04x 0x%04x %s %s" % (theDevice.idVendor, 
+                                          theDevice.idProduct,
+                                          theDevice.productName,
+                                          theDevice.manufacturer)
+
+    import sys
+    import time
+
+    if len(sys.argv) != 3:
+	print "stoplight [rgby] value"
+	exit
+
+    led = ord(sys.argv[1][0:1])
+    val = int(sys.argv[2])
+    print "stoplight %c %u" % (led, val)
+    theDevice.write(led)
+    theDevice.write(val)
+
+    
+                                
+
